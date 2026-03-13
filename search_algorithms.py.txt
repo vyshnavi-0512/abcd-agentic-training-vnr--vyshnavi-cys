@@ -1,0 +1,145 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import math
+
+# ---------------------------------------------------------
+# COSINE SIMILARITY BASED VECTOR SEARCH
+# ---------------------------------------------------------
+def vector_cosine_search(query_vector, documents):
+    """
+    Returns documents ranked by cosine similarity with query.
+    """
+    query = np.array(query_vector).reshape(1, -1)
+    docs = np.array(documents)
+
+    similarity_scores = cosine_similarity(query, docs)[0]
+
+    ranked_results = []
+    for index, score in enumerate(similarity_scores):
+        ranked_results.append((index, score))
+
+    ranked_results.sort(key=lambda x: x[1], reverse=True)
+
+    return ranked_results
+
+
+# ---------------------------------------------------------
+# SEQUENTIAL SEARCH
+# ---------------------------------------------------------
+def sequential_search(data, value):
+    """
+    Iterates through list to find the target value.
+    """
+    for index in range(len(data)):
+        if data[index] == value:
+            return index
+    return -1
+
+
+# ---------------------------------------------------------
+# CLASSIC BINARY SEARCH
+# ---------------------------------------------------------
+def binary_search_algorithm(sorted_list, value):
+    left = 0
+    right = len(sorted_list) - 1
+
+    while left <= right:
+        middle = (left + right) // 2
+
+        if sorted_list[middle] == value:
+            return middle
+
+        if sorted_list[middle] < value:
+            left = middle + 1
+        else:
+            right = middle - 1
+
+    return -1
+
+
+# ---------------------------------------------------------
+# BLOCK / JUMP SEARCH
+# ---------------------------------------------------------
+def block_jump_search(sorted_list, value):
+    length = len(sorted_list)
+    step = int(math.sqrt(length))
+    prev = 0
+
+    while prev < length and sorted_list[min(step, length)-1] < value:
+        prev = step
+        step += int(math.sqrt(length))
+
+        if prev >= length:
+            return -1
+
+    for i in range(prev, min(step, length)):
+        if sorted_list[i] == value:
+            return i
+
+    return -1
+
+
+# ---------------------------------------------------------
+# INTERPOLATION SEARCH
+# ---------------------------------------------------------
+def interpolation_search_algorithm(sorted_list, value):
+    low = 0
+    high = len(sorted_list) - 1
+
+    while low <= high and value >= sorted_list[low] and value <= sorted_list[high]:
+
+        if low == high:
+            if sorted_list[low] == value:
+                return low
+            return -1
+
+        pos = low + ((value - sorted_list[low]) * (high - low) //
+                     (sorted_list[high] - sorted_list[low]))
+
+        if sorted_list[pos] == value:
+            return pos
+
+        if sorted_list[pos] < value:
+            low = pos + 1
+        else:
+            high = pos - 1
+
+    return -1
+
+
+# ---------------------------------------------------------
+# DEMONSTRATION
+# ---------------------------------------------------------
+if __name__ == "__main__":
+
+    # VECTOR SEARCH EXAMPLE
+    documents = [
+        [1, 0, 1],
+        [0, 1, 1],
+        [1, 1, 0],
+        [0, 0, 1]
+    ]
+
+    query = [1, 1, 0]
+
+    print("Vector Cosine Search Results:")
+    print(vector_cosine_search(query, documents))
+
+
+    # LINEAR SEARCH
+    arr = [10, 3, 6, 8, 2, 15]
+    print("Sequential Search:", sequential_search(arr, 8))
+
+
+    # BINARY SEARCH
+    sorted_arr = sorted(arr)
+    print("Binary Search:", binary_search_algorithm(sorted_arr, 8))
+
+
+    # JUMP SEARCH
+    print("Jump Search:", block_jump_search(sorted_arr, 8))
+
+
+    # INTERPOLATION SEARCH
+    uniform_arr = [10, 20, 30, 40, 50, 60]
+    print("Interpolation Search:", interpolation_search_algorithm(uniform_arr, 40))
