@@ -1,6 +1,7 @@
 # abcd-agentic-training-vnr--vyshnavi-cys
  ## Project
-  🧾 WarrantyWallet — Agentic AI Receipt & Warranty Managerhttps://github.com/vyshnavi-0512/WarrantyWallet.git
+  🧾 WarrantyWallet — Agentic AI Receipt & Warranty Manager
+  https://github.com/vyshnavi-0512/WarrantyWallet.git
  
 ## Full Stack: Campussync
 https://github.com/vyshnavi-0512/CampusSync.git
